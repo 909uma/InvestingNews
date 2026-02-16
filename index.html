@@ -1,9 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
     <title>InvestingNews</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        #content-area { 
+            border-top: 2px solid #333; 
+            margin-top: 20px; 
+            padding-top: 20px;
+        }
+        .loading { color: #888; font-style: italic; }
+    </style>
 </head>
 <body>
-    <h1>매일 증시요약 브리핑 준비 중입니다!</h1>
+    <h1>매일 증시요약 브리핑</h1>
+    
+    <div id="content-area">
+        <p class="loading">브리핑 내용을 불러오는 중입니다...</p>
+    </div>
+
+    <script>
+        async function loadBriefing() {
+            const url = 'https://obsidian-market-briefer-105162331967.us-west1.run.app/';
+            const displayArea = document.getElementById('content-area');
+
+            try {
+                // 사이트의 HTML 내용을 가져옵니다.
+                const response = await fetch(url);
+                const data = await response.text();
+                
+                // 가져온 내용을 HTML 구역에 집어넣습니다.
+                displayArea.innerHTML = data;
+            } catch (error) {
+                displayArea.innerHTML = "<p>내용을 불러오는 데 실패했습니다. <a href='" + url + "' target='_blank'>직접 확인하기</a></p>";
+                console.error('Error:', error);
+            }
+        }
+
+        // 페이지 로드 시 실행
+        loadBriefing();
+    </script>
 </body>
 </html>
